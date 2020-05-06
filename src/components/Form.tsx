@@ -9,8 +9,8 @@ interface Props {
 export class Form extends Component<Props> {
   state = {
     content: "",
-    disableButton: false,
   };
+  componentDidMount() {}
 
   handleOnSubmit: (event: React.FormEvent<HTMLFormElement>) => void = event => {
     event.preventDefault();
@@ -20,15 +20,18 @@ export class Form extends Component<Props> {
   };
 
   handleOnChange: (eventValue: string) => void = eventValue => {
-    this.setState({content: eventValue});
     // console.log(this.state.content.length);
     // console.log(this.state.disableButton);
-    if (this.state.content.length > 140) {
-      this.setState({disableButton: true});
-    } else {
-      this.setState({disableButton: false});
-    }
+    this.setState({content: eventValue});
     // console.log(this.state.disableButton);
+  };
+
+  shouldDisable = (): boolean => {
+    if (!this.state.content || this.state.content.length > 140) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   render() {
@@ -45,8 +48,8 @@ export class Form extends Component<Props> {
             ></textarea>
             <button
               type="submit"
-              disabled={this.state.disableButton}
-              className="btn btn-secondary"
+              disabled={this.shouldDisable()}
+              className="btn btn-light"
             >
               Post
             </button>

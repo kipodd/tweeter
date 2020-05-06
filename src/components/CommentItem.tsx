@@ -15,8 +15,10 @@ export class Comment extends Component<Props> {
     return (
       <div>
         <div className="card bg-dark text-white mb-3">
-          <div className="text-muted">{user}</div>
-          <div className="float-right text-muted">{time.toString()}</div>
+          <div className="d-flex justify-content-between p-3">
+            <div className="text-muted">{user}</div>
+            <div className="text-muted">{time.toString()}</div>
+          </div>
           <div className="card-body">{content}</div>
         </div>
       </div>
