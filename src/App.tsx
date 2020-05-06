@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-// import "./App.css";
+import "./App.css";
 import Form from "./components/Form";
 import Comments from "./components/Comments";
 import {getAllComments} from "./lib/api";
@@ -21,8 +21,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Form loadComments={this.loadComments} />
-        <Comments comments={this.state.comments} />
+        <div className="container-fluid">
+          <div className="row mt-5">
+            <div className="offset-2 col-8">
+              <Form loadComments={this.loadComments} />
+              <Comments comments={this.state.comments} />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

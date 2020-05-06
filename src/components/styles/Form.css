@@ -6,10 +6,12 @@
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    /* background: #282c34 */
+    color: white
 }
 
 .textarea-container button {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 0.5rem;
+    right: 0.5rem;
 }
