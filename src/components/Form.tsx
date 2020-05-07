@@ -10,28 +10,11 @@ export class Form extends Component<Props> {
   state = {
     content: "",
   };
-  componentDidMount() {}
 
   handleOnSubmit: (event: React.FormEvent<HTMLFormElement>) => void = event => {
     event.preventDefault();
-    const {content} = this.state;
-    createComment(new Date().getUTCMilliseconds(), "John", content);
+    createComment(new Date().getUTCMilliseconds(), "John", this.state.content);
     this.props.loadComments();
-  };
-
-  handleOnChange: (eventValue: string) => void = eventValue => {
-    // console.log(this.state.content.length);
-    // console.log(this.state.disableButton);
-    this.setState({content: eventValue});
-    // console.log(this.state.disableButton);
-  };
-
-  shouldDisable = (): boolean => {
-    if (!this.state.content || this.state.content.length > 140) {
-      return true;
-    } else {
-      return false;
-    }
   };
 
   render() {
@@ -43,12 +26,15 @@ export class Form extends Component<Props> {
               className="form-control bg-dark text-white"
               placeholder="Say something to the world!"
               rows={3}
-              // onChange={event => this.setState({content: event.target.value})}
-              onChange={event => this.handleOnChange(event.target.value)}
+              onChange={event => this.setState({content: event.target.value})}
             ></textarea>
             <button
               type="submit"
-              disabled={this.shouldDisable()}
+              disabled={
+                !this.state.content || this.state.content.length > 140
+                  ? true
+                  : false
+              }
               className="btn btn-light"
             >
               Post
