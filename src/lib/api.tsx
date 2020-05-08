@@ -7,7 +7,6 @@ export function getAllComments() {
 }
 
 export function createComment(userName: string, content: string, date: string) {
-  console.log(userName, content, date);
   return fetch(url, {
     method: "post",
     headers: {
