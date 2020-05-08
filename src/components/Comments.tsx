@@ -3,17 +3,17 @@ import CommentItem from "./CommentItem";
 
 interface Props {
   comments: {
-    id: number;
-    user: string;
-    time: Date;
     content: string;
+    date: string;
+    userName: string;
   }[];
 }
 
 export class Comment extends Component<Props> {
   render() {
-    return this.props.comments.map(comment => (
-      <CommentItem key={comment.id} comment={comment} />
+    // return <> </>;
+    return this.props.comments.map((comment, index) => (
+      <CommentItem key={index} comment={comment} />
     ));
   }
 }

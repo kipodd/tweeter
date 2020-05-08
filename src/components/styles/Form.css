@@ -16,6 +16,12 @@
     right: 0.5rem;
 }
 
+.textarea-container .alert {
+    position: absolute;
+    bottom: -0.3rem;
+    left: 0.5rem;
+}
+
 ::placeholder {
     color: white !important
 }

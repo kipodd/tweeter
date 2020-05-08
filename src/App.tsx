@@ -9,9 +9,10 @@ class App extends Component {
     comments: [],
   };
 
-  loadComments = () => {
-    const data = getAllComments();
-    this.setState({comments: data});
+  loadComments = async () => {
+    const response = await getAllComments();
+    const data = await response.json();
+    this.setState({comments: data.tweets});
   };
 
   componentDidMount() {

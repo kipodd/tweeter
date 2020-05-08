@@ -9,15 +9,32 @@ interface Props {
 export class Form extends Component<Props> {
   state = {
     content: "",
+    buttonLoading: false,
+    serverError: "",
   };
 
-  handleOnSubmit: (event: React.FormEvent<HTMLFormElement>) => void = event => {
+  handleOnSubmit: (
+    event: React.FormEvent<HTMLFormElement>
+  ) => void = async event => {
     event.preventDefault();
-    createComment(new Date().getUTCMilliseconds(), "John", this.state.content);
-    this.props.loadComments();
+    this.setState({buttonLoading: true, serverError: ""});
+
+    const response = await createComment(
+      "John",
+      this.state.content,
+      new Date().toISOString()
+    );
+    if (response.ok) {
+      this.props.loadComments();
+      this.setState({buttonLoading: false});
+    } else {
+      const errorMessage = await response.text();
+      this.setState({buttonLoading: false, serverError: errorMessage});
+    }
   };
 
   render() {
+    const {content, buttonLoading, serverError} = this.state;
     return (
       <div>
         <form onSubmit={event => this.handleOnSubmit(event)}>
@@ -25,19 +42,30 @@ export class Form extends Component<Props> {
             <textarea
               className="form-control bg-dark text-white"
               placeholder="Say something to the world!"
-              rows={3}
+              rows={5}
               onChange={event => this.setState({content: event.target.value})}
             ></textarea>
+            {serverError && (
+              <span className="alert alert-danger px-2 py-1" role="alert">
+                Server error: {serverError}
+              </span>
+            )}
             <button
               type="submit"
               disabled={
-                !this.state.content || this.state.content.length > 140
-                  ? true
-                  : false
+                buttonLoading || !content || content.length > 140 ? true : false
               }
               className="btn btn-light"
             >
-              Post
+              {buttonLoading ? (
+                <span
+                  className="spinner-grow spinner-grow-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              ) : (
+                "Post"
+              )}
             </button>
           </div>
         </form>
