@@ -3,6 +3,7 @@ import "./styles/Form.css";
 import {createComment} from "../lib/api";
 
 interface Props {
+  userName: string;
   loadComments: () => void;
 }
 
@@ -20,7 +21,7 @@ export class Form extends Component<Props> {
     this.setState({buttonLoading: true, serverError: ""});
 
     const response = await createComment(
-      "John",
+      this.props.userName,
       this.state.content,
       new Date().toISOString()
     );
