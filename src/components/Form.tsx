@@ -13,19 +13,21 @@ export class Form extends Component {
   handleOnSubmit: (
     event: React.FormEvent<HTMLFormElement>,
     userName: string,
-    loadComments: () => void
-  ) => void = async (event, userName, loadComments) => {
+    loadNewComment: (userName: string, content: string, date: string) => void
+  ) => void = async (event, userName, loadNewComment) => {
     event.preventDefault();
     this.setState({buttonLoading: true, serverError: ""});
-    console.log(userName);
+
+    const newComment = [userName, this.state.content, new Date().toISOString()];
 
     const response = await createComment(
-      userName,
-      this.state.content,
-      new Date().toISOString()
+      newComment[0],
+      newComment[1],
+      newComment[2]
     );
     if (response.ok) {
-      loadComments();
+      // loadComments();
+      loadNewComment(newComment[0], newComment[1], newComment[2]);
       this.setState({buttonLoading: false});
     } else {
       const errorMessage = await response.text();
@@ -38,10 +40,10 @@ export class Form extends Component {
     return (
       <div>
         <FormContext.Consumer>
-          {({userName, loadComments}) => (
+          {({userName, loadNewComment}) => (
             <form
               onSubmit={event =>
-                this.handleOnSubmit(event, userName, loadComments)
+                this.handleOnSubmit(event, userName, loadNewComment)
               }
             >
               <div className="form-group textarea-container">

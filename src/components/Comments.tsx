@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import CommentItem from "./CommentItem";
 import {CommentsContext} from "../Contexts";
 
-export class Comment extends Component {
+class Comment extends Component {
   render() {
     return (
       <div>

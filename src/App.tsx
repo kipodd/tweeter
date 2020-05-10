@@ -13,14 +13,27 @@ class App extends Component {
     userName: "Anonymous",
   };
 
+  refreshComments!: NodeJS.Timeout;
+
   loadComments = async () => {
     const response = await getAllComments();
     const data = await response.json();
     this.setState({comments: data.tweets});
   };
 
+  loadNewComment = (userName: string, content: string, date: string) => {
+    this.setState({
+      comments: [{userName, content, date}, ...this.state.comments],
+    });
+  };
+
   componentDidMount() {
+    this.refreshComments = setInterval(this.loadComments, 10000);
     this.loadComments();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.refreshComments);
   }
 
   changeUsername = (newUsername: string) => {
@@ -75,7 +88,8 @@ class App extends Component {
                     <FormContext.Provider
                       value={{
                         userName: userName,
-                        loadComments: this.loadComments,
+                        // loadComments: this.loadComments,
+                        loadNewComment: this.loadNewComment,
                       }}
                     >
                       <Form />
