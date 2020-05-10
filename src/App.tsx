@@ -5,6 +5,7 @@ import Form from "./components/Form";
 import Comments from "./components/Comments";
 import Profile from "./components/Profile";
 import {getAllComments} from "./lib/api";
+import {CommentsContext, FormContext} from "./Contexts";
 
 class App extends Component {
   state = {
@@ -27,7 +28,7 @@ class App extends Component {
   };
 
   render() {
-    const {userName} = this.state;
+    const {userName, comments} = this.state;
     return (
       <div className="App">
         <Router>
@@ -71,11 +72,17 @@ class App extends Component {
               <div className="container-fluid">
                 <div className="row mt-5">
                   <div className="offset-2 col-8">
-                    <Form
-                      userName={userName}
-                      loadComments={this.loadComments}
-                    />
-                    <Comments comments={this.state.comments} />
+                    <FormContext.Provider
+                      value={{
+                        userName: userName,
+                        loadComments: this.loadComments,
+                      }}
+                    >
+                      <Form />
+                    </FormContext.Provider>
+                    <CommentsContext.Provider value={{comments: comments}}>
+                      <Comments />
+                    </CommentsContext.Provider>
                   </div>
                 </div>
               </div>

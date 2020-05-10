@@ -1,20 +1,20 @@
 import React, {Component} from "react";
 import CommentItem from "./CommentItem";
+import {CommentsContext} from "../Contexts";
 
-interface Props {
-  comments: {
-    content: string;
-    date: string;
-    userName: string;
-  }[];
-}
-
-export class Comment extends Component<Props> {
+export class Comment extends Component {
   render() {
-    // return <> </>;
-    return this.props.comments.map((comment, index) => (
-      <CommentItem key={index} comment={comment} />
-    ));
+    return (
+      <div>
+        <CommentsContext.Consumer>
+          {comments => {
+            return comments.comments.map((comment, index) => (
+              <CommentItem key={index} comment={comment} />
+            ));
+          }}
+        </CommentsContext.Consumer>
+      </div>
+    );
   }
 }
 
