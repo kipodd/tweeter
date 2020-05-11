@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import "./styles/Form.css";
-import {createComment} from "../lib/api";
+// import {createComment} from "../lib/api";
 import {FormContext} from "../Contexts";
+import * as firebase from "firebase/app";
 
 export class Form extends Component {
   state = {
@@ -19,20 +20,23 @@ export class Form extends Component {
     event.preventDefault();
     this.setState({buttonLoading: true, serverError: ""});
 
-    const newComment = [userName, this.state.content, new Date().toISOString()];
+    const newComment = {
+      userName: userName,
+      content: this.state.content,
+      date: new Date().toISOString(),
+    };
 
-    const response = await createComment(
-      newComment[0],
-      newComment[1],
-      newComment[2]
-    );
-    if (response.ok) {
-      loadNewComment(newComment[0], newComment[1], newComment[2]);
-      this.setState({buttonLoading: false, content: ""});
-    } else {
-      const errorMessage = await response.text();
-      this.setState({buttonLoading: false, serverError: errorMessage});
-    }
+    const db = firebase.firestore();
+    await db.collection("comments").add({...newComment});
+    this.setState({buttonLoading: false, content: ""});
+
+    // if (response.ok) {
+    //   loadNewComment(newComment[0], newComment[1], newComment[2]);
+    //   this.setState({buttonLoading: false, content: ""});
+    // } else {
+    //   const errorMessage = await response.text();
+    //   this.setState({buttonLoading: false, serverError: errorMessage});
+    // }
   };
 
   render() {

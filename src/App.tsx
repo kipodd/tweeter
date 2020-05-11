@@ -16,16 +16,11 @@ class App extends Component {
 
   refreshComments!: NodeJS.Timeout;
 
-  // loadComments = async () => {
-  //   const response = await getAllComments();
-  //   const data = await response.json();
-  //   this.setState({comments: data.tweets});
-  // };
-
   loadComments = async () => {
     const db = firebase.firestore();
     const data = await db.collection("comments").get();
     const comments = data.docs.map(doc => doc.data());
+
     this.setState({comments: comments});
   };
 
