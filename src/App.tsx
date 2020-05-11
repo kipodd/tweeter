@@ -4,8 +4,9 @@ import "./App.css";
 import Form from "./components/Form";
 import Comments from "./components/Comments";
 import Profile from "./components/Profile";
-import {getAllComments} from "./lib/api";
+// import {getAllComments} from "./lib/api";
 import {CommentsContext, FormContext} from "./Contexts";
+import * as firebase from "firebase/app";
 
 class App extends Component {
   state = {
@@ -15,10 +16,17 @@ class App extends Component {
 
   refreshComments!: NodeJS.Timeout;
 
+  // loadComments = async () => {
+  //   const response = await getAllComments();
+  //   const data = await response.json();
+  //   this.setState({comments: data.tweets});
+  // };
+
   loadComments = async () => {
-    const response = await getAllComments();
-    const data = await response.json();
-    this.setState({comments: data.tweets});
+    const db = firebase.firestore();
+    const data = await db.collection("comments").get();
+    const comments = data.docs.map(doc => doc.data());
+    this.setState({comments: comments});
   };
 
   loadNewComment = (userName: string, content: string, date: string) => {
