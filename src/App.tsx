@@ -17,11 +17,17 @@ class App extends Component {
   refreshComments!: NodeJS.Timeout;
 
   loadComments = async () => {
-    const db = firebase.firestore();
-    const data = await db.collection("comments").get();
-    const comments = data.docs.map(doc => doc.data());
-
-    this.setState({comments: comments});
+    try {
+      const db = firebase.firestore();
+      const data = await db
+        .collection("comments")
+        .orderBy("date", "desc")
+        .get();
+      const comments = data.docs.map(doc => doc.data());
+      this.setState({comments: comments});
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   loadNewComment = (userName: string, content: string, date: string) => {

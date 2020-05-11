@@ -26,17 +26,16 @@ export class Form extends Component {
       date: new Date().toISOString(),
     };
 
-    const db = firebase.firestore();
-    await db.collection("comments").add({...newComment});
-    this.setState({buttonLoading: false, content: ""});
-
-    // if (response.ok) {
-    //   loadNewComment(newComment[0], newComment[1], newComment[2]);
-    //   this.setState({buttonLoading: false, content: ""});
-    // } else {
-    //   const errorMessage = await response.text();
-    //   this.setState({buttonLoading: false, serverError: errorMessage});
-    // }
+    try {
+      const db = firebase.firestore();
+      await db.collection("comments").add({...newComment});
+      loadNewComment(newComment.userName, newComment.content, newComment.date);
+      this.setState({buttonLoading: false, content: ""});
+    } catch (err) {
+      console.error(err);
+      const errorMessage = err;
+      this.setState({buttonLoading: false, serverError: errorMessage});
+    }
   };
 
   render() {
