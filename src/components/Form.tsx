@@ -8,6 +8,7 @@ export class Form extends Component {
     content: "",
     buttonLoading: false,
     serverError: "",
+    valueText: "",
   };
 
   handleOnSubmit: (
@@ -26,9 +27,8 @@ export class Form extends Component {
       newComment[2]
     );
     if (response.ok) {
-      // loadComments();
       loadNewComment(newComment[0], newComment[1], newComment[2]);
-      this.setState({buttonLoading: false});
+      this.setState({buttonLoading: false, content: ""});
     } else {
       const errorMessage = await response.text();
       this.setState({buttonLoading: false, serverError: errorMessage});
@@ -51,6 +51,7 @@ export class Form extends Component {
                   className="form-control bg-dark text-white"
                   placeholder="Say something to the world!"
                   rows={5}
+                  value={content}
                   onChange={event =>
                     this.setState({content: event.target.value})
                   }
