@@ -37,12 +37,12 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.refreshComments = setInterval(this.loadComments, 10000);
+    // this.refreshComments = setInterval(this.loadComments, 10000);
     this.loadComments();
   }
 
   componentWillUnmount() {
-    clearInterval(this.refreshComments);
+    // clearInterval(this.refreshComments);
   }
 
   changeUsername = (newUsername: string) => {

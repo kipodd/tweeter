@@ -28,6 +28,7 @@ export class Form extends Component {
 
     try {
       const db = firebase.firestore();
+      console.log(newComment);
       await db.collection("comments").add({...newComment});
       loadNewComment(newComment.userName, newComment.content, newComment.date);
       this.setState({buttonLoading: false, content: ""});
