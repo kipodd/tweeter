@@ -1,5 +1,11 @@
 import React, {Component} from "react";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 import "./App.css";
 import Form from "./components/Form";
 import Comments from "./components/Comments";
@@ -10,8 +16,9 @@ import * as firebase from "firebase/app";
 
 class App extends Component {
   state = {
+    userObj: ``,
     comments: [],
-    userName: "Anonymous",
+    userName: `Anonymous`,
   };
 
   refreshComments!: NodeJS.Timeout;
@@ -36,9 +43,26 @@ class App extends Component {
     });
   };
 
+  authListener = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log(`User ${user.email} logged in.`);
+        this.setState({userObj: user});
+      } else {
+        console.log(`Not logged in.`);
+        this.setState({userObj: ``});
+      }
+
+      // firebase.auth().currentUser
+      //   ? console.log(firebase.auth().currentUser!.email)
+      //   : console.log(2);
+    });
+  };
+
   componentDidMount() {
     // this.refreshComments = setInterval(this.loadComments, 10000);
     this.loadComments();
+    this.authListener();
   }
 
   componentWillUnmount() {
@@ -50,7 +74,7 @@ class App extends Component {
   };
 
   render() {
-    const {userName, comments} = this.state;
+    const {userName, comments, userObj} = this.state;
     return (
       <div className="App">
         <Router>
@@ -85,12 +109,29 @@ class App extends Component {
               <div className="container-fluid">
                 <div className="row mt-5">
                   <div className="offset-2 col-8">
-                    <Profile changeUsername={this.changeUsername}></Profile>
+                    <Profile
+                      changeUsername={this.changeUsername}
+                      userObj={userObj}
+                    ></Profile>
                   </div>
                 </div>
               </div>
             </Route>
-            <Route path="/">
+            <Route
+              path="/"
+              // render={() => {
+              //   return (
+              //     <>
+              //       <div>Hello!!</div>
+              //       <Redirect
+              //         to={{
+              //           pathname: "/profile",
+              //         }}
+              //       />
+              //     </>
+              //   );
+              // }}
+            >
               <div className="container-fluid">
                 <div className="row mt-5">
                   <div className="offset-2 col-8">

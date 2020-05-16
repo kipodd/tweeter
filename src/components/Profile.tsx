@@ -3,30 +3,20 @@ import * as firebase from "firebase/app";
 
 interface Props {
   changeUsername: (newUsername: string) => void;
+  userObj: string;
 }
 
 export class Profile extends Component<Props> {
   state = {
-    userName: "",
+    // userName: "",
     email: "",
     password: "",
+    // userEmail: "",
   };
 
-  componentDidMount() {
-    this.authListener();
-  }
-
-  authListener = () => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log(`User ${user.email} logged in.`);
-        this.setState({user: user});
-      } else {
-        this.setState({user: null});
-      }
-      // console.log(firebase.auth().currentUser);
-    });
-  };
+  // componentDidMount() {
+  //   this.authListener();
+  // }
 
   handleOnSubmit: (
     event: React.FormEvent<HTMLFormElement>
@@ -39,12 +29,26 @@ export class Profile extends Component<Props> {
     } catch (err) {
       console.error(err);
     }
-    this.props.changeUsername(this.state.userName);
+    this.props.changeUsername(this.state.email);
+  };
+
+  logout: () => any = () => {
+    firebase.auth().signOut();
   };
 
   render() {
+    const {userObj} = this.props;
+
     return (
       <div>
+        {userObj && (
+          <div className="text-white mb-3">
+            Logged in as {firebase.auth().currentUser!.email}
+            <span className="float-right" onClick={() => this.logout()}>
+              <u>Logout</u>
+            </span>
+          </div>
+        )}
         <form onSubmit={event => this.handleOnSubmit(event)}>
           <label htmlFor="validationDefaultUsername" className="text-white">
             Email address:
