@@ -1,11 +1,5 @@
 import React, {Component} from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import "./App.css";
 import Form from "./components/Form";
 import Comments from "./components/Comments";
@@ -52,21 +46,17 @@ class App extends Component {
         console.log(`Not logged in.`);
         this.setState({userObj: ``});
       }
-
-      // firebase.auth().currentUser
-      //   ? console.log(firebase.auth().currentUser!.email)
-      //   : console.log(2);
     });
   };
 
   componentDidMount() {
-    // this.refreshComments = setInterval(this.loadComments, 10000);
+    this.refreshComments = setInterval(this.loadComments, 10000);
     this.loadComments();
     this.authListener();
   }
 
   componentWillUnmount() {
-    // clearInterval(this.refreshComments);
+    clearInterval(this.refreshComments);
   }
 
   changeUsername = (newUsername: string) => {
@@ -80,7 +70,7 @@ class App extends Component {
         <Router>
           <nav className="navbar navbar-expand-lg navbar-dark bg-secondary sticky-top">
             <Link className="navbar-brand" to="/">
-              Microblog
+              Tweeter
             </Link>
             <button
               className="navbar-toggler"
@@ -117,21 +107,7 @@ class App extends Component {
                 </div>
               </div>
             </Route>
-            <Route
-              path="/"
-              // render={() => {
-              //   return (
-              //     <>
-              //       <div>Hello!!</div>
-              //       <Redirect
-              //         to={{
-              //           pathname: "/profile",
-              //         }}
-              //       />
-              //     </>
-              //   );
-              // }}
-            >
+            <Route path="/">
               <div className="container-fluid">
                 <div className="row mt-5">
                   <div className="offset-2 col-8">

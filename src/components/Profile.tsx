@@ -8,15 +8,9 @@ interface Props {
 
 export class Profile extends Component<Props> {
   state = {
-    // userName: "",
     email: "",
     password: "",
-    // userEmail: "",
   };
-
-  // componentDidMount() {
-  //   this.authListener();
-  // }
 
   handleOnSubmit: (
     event: React.FormEvent<HTMLFormElement>
@@ -32,7 +26,7 @@ export class Profile extends Component<Props> {
     this.props.changeUsername(this.state.email);
   };
 
-  logout: () => any = () => {
+  logout: () => void = () => {
     firebase.auth().signOut();
   };
 
@@ -44,8 +38,14 @@ export class Profile extends Component<Props> {
         {userObj && (
           <div className="text-white mb-3">
             Logged in as {firebase.auth().currentUser!.email}
-            <span className="float-right" onClick={() => this.logout()}>
-              <u>Logout</u>
+            <span className="float-right">
+              <button
+                type="button"
+                className="btn btn-link text-white p-0 pb-2"
+                onClick={() => this.logout()}
+              >
+                Logout
+              </button>
             </span>
           </div>
         )}

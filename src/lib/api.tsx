@@ -1,5 +1,7 @@
 const url = "https://itc-bootcamp-19-dot-charcha-dev.appspot.com/tweet";
 
+// Redundant API, FireBase connection replaced this
+
 export function getAllComments() {
   return fetch(url);
 }

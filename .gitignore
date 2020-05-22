@@ -24,3 +24,4 @@ yarn-error.log*
 .vscode/settings.json
 .firebase
 .firebaserc
+public/message-2-line.svg:Zone.Identifier

@@ -6,6 +6,5 @@ export const CommentsContext = React.createContext({
 
 export const FormContext = React.createContext({
   userName: "",
-  // loadComments: () => {},
   loadNewComment: (userName: string, content: string, date: string) => {},
 });
